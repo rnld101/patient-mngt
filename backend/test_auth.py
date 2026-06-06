@@ -74,5 +74,25 @@ class TestAuthService(unittest.TestCase):
             AuthService.authenticate_user(self.db, "nonexistent@example.com", password)
         self.assertEqual(str(context.exception), "Invalid email or password")
 
+    def test_jwt_token_generation_and_decoding(self):
+        from app.core.config import settings
+        from app.core.security import decode_access_token
+        
+        # Ensure a secret key is set for testing
+        old_secret = settings.jwt_secret_key
+        settings.jwt_secret_key = "test-secret-key"
+        
+        try:
+            # Generate token
+            token = AuthService.generate_token(123)
+            self.assertIsNotNone(token)
+            
+            # Decode token
+            decoded = decode_access_token(token)
+            self.assertEqual(decoded["user_id"], 123)
+            self.assertIsInstance(decoded["user_id"], int)  # Must be an integer!
+        finally:
+            settings.jwt_secret_key = old_secret
+
 if __name__ == "__main__":
     unittest.main()
