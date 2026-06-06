@@ -46,12 +46,6 @@ Want to get running quickly? Follow this order:
 # Start development
 python -m uvicorn app.main:app --reload
 
-# Run migrations
-alembic upgrade head
-
-# Create migration
-alembic revision --autogenerate -m "message"
-
 # Install dependencies
 pip install -r requirements.txt
 ```
@@ -306,7 +300,6 @@ aws kms list-keys
 - [ ] Created 3 EC2 instances
 - [ ] Modified security groups
 - [ ] Updated .env files
-- [ ] Run migrations
 - [ ] All services running
 - [ ] API endpoints respond
 - [ ] Frontend loads
@@ -369,7 +362,7 @@ For Testing:
 For Code:
   Backend: app/main.py
   Frontend: src/App.jsx
-  Database: alembic/versions/001_initial.py
+  Database Models: app/models/__init__.py
 
 For Issues:
   DEPLOYMENT.md → Troubleshooting section
@@ -416,9 +409,8 @@ sudo systemctl restart patient-app nginx mysql
 # Clear database (be careful!)
 mysql -u patient_app -p patient_db -e "DROP TABLE IF EXISTS patients; DROP TABLE IF EXISTS users;"
 
-# Re-run migrations
-alembic downgrade base
-alembic upgrade head
+# Restart application to recreate tables
+sudo systemctl restart patient-app
 ```
 
 ---

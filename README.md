@@ -36,10 +36,9 @@ Frontend (React) → Backend (FastAPI) → Database (MySQL)
 - Tailwind CSS
 
 ### Backend
-- Python 3.13
+- Python 3.14
 - FastAPI
 - SQLAlchemy
-- Alembic
 - Gunicorn
 - Nginx
 
@@ -82,12 +81,7 @@ kms-secret-project/
 │   │   │   └── validators.py (File validation)
 │   │   ├── main.py (FastAPI app)
 │   │   └── __init__.py
-│   ├── alembic/
-│   │   ├── versions/ (Database migrations)
-│   │   ├── env.py (Alembic config)
-│   │   └── script.mako.py (Migration template)
 │   ├── requirements.txt
-│   ├── alembic.ini
 │   ├── .env.example
 │   └── README.md
 │
@@ -160,14 +154,13 @@ cp .env.example .env
 # Edit .env with your MySQL credentials
 nano .env
 
-# Run migrations
-alembic upgrade head
-
-# Start server
+# Start server (tables created automatically on startup)
 python -m uvicorn app.main:app --reload
 ```
 
 Backend runs at: `http://localhost:8000`
+
+**Note:** Database tables are created automatically on application startup.
 
 ### Setup Frontend
 

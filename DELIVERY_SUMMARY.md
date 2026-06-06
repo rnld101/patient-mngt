@@ -17,10 +17,7 @@ This document lists all components delivered for the Patient Management Applicat
 
 #### Models & Database
 - [x] `app/models/__init__.py` - SQLAlchemy models (User, Patient)
-- [x] `app/database/__init__.py` - Database session management
-- [x] `alembic/env.py` - Alembic configuration
-- [x] `alembic.ini` - Alembic settings
-- [x] `alembic/versions/001_initial.py` - Initial migration
+- [x] `app/database/__init__.py` - Database session management with auto table creation
 
 #### Schemas & Validation
 - [x] `app/schemas/__init__.py` - Pydantic schemas for all endpoints
@@ -90,12 +87,11 @@ This document lists all components delivered for the Patient Management Applicat
 - [x] `deploy.sh` - Deployment script
 - [x] `Dockerfile` - Docker containerization
 
-### Database & Migrations
+### Database & Schema
 
 - [x] SQL schema for users table
 - [x] SQL schema for patients table
-- [x] Alembic versioning system
-- [x] Migration to create initial tables
+- [x] Automatic table creation on startup
 - [x] Proper indexes and constraints
 
 ### AWS Infrastructure
@@ -311,10 +307,9 @@ GET /health                      - Health check
 
 ## Technology Versions
 
-- **Python**: 3.13
+- **Python**: 3.14
 - **FastAPI**: 0.115.0
 - **SQLAlchemy**: 2.0.35
-- **Alembic**: 1.13.1
 - **PyJWT**: 3.3.0
 - **Passlib**: 1.7.4
 - **bcrypt**: 4.2.0
@@ -346,9 +341,7 @@ kms-secret-project/
 │   │   ├── utils/                   # Utilities
 │   │   ├── main.py                  # FastAPI app
 │   │   └── __init__.py
-│   ├── alembic/                     # Database migrations
 │   ├── requirements.txt             # Dependencies
-│   ├── alembic.ini                  # Migration config
 │   ├── .env.example                 # Environment template
 │   ├── Dockerfile                   # Docker image
 │   ├── nginx.conf                   # Nginx config

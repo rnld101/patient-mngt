@@ -54,27 +54,22 @@ pip install --upgrade pip
 pip install -r "$DEPLOY_DIR/requirements.txt"
 
 # Step 5: Copy and configure environment file
-echo -e "\n${BLUE}[5/8] Setting up environment file...${NC}"
+echo -e "\n${BLUE}[5/7] Setting up environment file...${NC}"
 if [ ! -f "$DEPLOY_DIR/.env" ]; then
     cp "$DEPLOY_DIR/.env.example" "$DEPLOY_DIR/.env"
     echo "Please edit $DEPLOY_DIR/.env with your configuration"
 fi
 
-# Step 6: Run database migrations
-echo -e "\n${BLUE}[6/8] Running database migrations...${NC}"
-cd "$DEPLOY_DIR"
-"$VENV_DIR/bin/alembic" upgrade head
-
-# Step 7: Configure systemd service
-echo -e "\n${BLUE}[7/8] Configuring systemd service...${NC}"
+# Step 6: Configure systemd service
+echo -e "\n${BLUE}[6/7] Configuring systemd service...${NC}"
 sudo cp "$DEPLOY_DIR/patient-app.service" /etc/systemd/system/patient-app.service
 sudo chown root:root /etc/systemd/system/patient-app.service
 sudo chmod 644 /etc/systemd/system/patient-app.service
 sudo systemctl daemon-reload
 sudo systemctl enable patient-app
 
-# Step 8: Configure Nginx
-echo -e "\n${BLUE}[8/8] Configuring Nginx...${NC}"
+# Step 7: Configure Nginx
+echo -e "\n${BLUE}[7/7] Configuring Nginx...${NC}"
 sudo cp "$DEPLOY_DIR/nginx.conf" /etc/nginx/sites-available/patient-app
 sudo ln -sf /etc/nginx/sites-available/patient-app /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
@@ -84,10 +79,9 @@ sudo systemctl enable nginx
 echo -e "\n${GREEN}=== Deployment Complete ===${NC}"
 echo -e "\n${GREEN}Next steps:${NC}"
 echo "1. Edit $DEPLOY_DIR/.env with your database credentials"
-echo "2. Run: cd $DEPLOY_DIR && source venv/bin/activate && alembic upgrade head"
-echo "3. Start the service: sudo systemctl start patient-app"
-echo "4. Start Nginx: sudo systemctl start nginx"
-echo "5. Check status: sudo systemctl status patient-app"
-echo "6. View logs: sudo journalctl -u patient-app -f"
+echo "2. Start the service: sudo systemctl start patient-app"
+echo "3. Start Nginx: sudo systemctl start nginx"
+echo "4. Check status: sudo systemctl status patient-app"
+echo "5. View logs: sudo journalctl -u patient-app -f"
 echo ""
 echo "API will be available at: http://[server-ip]:8000"
