@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { patientService } from '../services/patientService'
+import { getErrorMessage } from '../utils/errorHandler'
 
 export const AddPatientPage = () => {
   const { logout } = useAuth()
@@ -59,7 +60,7 @@ export const AddPatientPage = () => {
 
       navigate('/patients')
     } catch (err) {
-      setError(err.response?.data?.detail || 'Failed to create patient')
+      setError(getErrorMessage(err))
     } finally {
       setLoading(false)
     }
@@ -103,12 +104,159 @@ export const AddPatientPage = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Add New Patient</h2>
 
           {error && (
-            <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded whitespace-pre-line">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                  Name *
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="John Doe"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="age" className="block text-sm font-medium text-gray-700">
+                  Age *
+                </label>
+                <input
+                  id="age"
+                  name="age"
+                  type="number"
+                  value={formData.age}
+                  onChange={handleChange}
+                  required
+                  min="1"
+                  max="150"
+                  className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="30"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
+                  Gender *
+                </label>
+                <select
+                  id="gender"
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="blood_group" className="block text-sm font-medium text-gray-700">
+                  Blood Group *
+                </label>
+                <select
+                  id="blood_group"
+                  name="blood_group"
+                  value={formData.blood_group}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Select Blood Group</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                  Phone *
+                </label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="+1 (555) 123-4567"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+                  Profile Picture
+                </label>
+                <input
+                  id="image"
+                  name="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg"
+                />
+                {image && <p className="text-sm text-gray-600 mt-1">{image.name}</p>}
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                Address *
+              </label>
+              <textarea
+                id="address"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                required
+                rows="4"
+                className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="123 Main St, City, State ZIP"
+              />
+            </div>
+
+            <div className="flex gap-4">
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 font-medium"
+              >
+                {loading ? 'Creating...' : 'Create Patient'}
+              </button>
+              <Link
+                to="/patients"
+                className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 font-medium"
+              >
+                Cancel
+              </Link>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  )
+}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">

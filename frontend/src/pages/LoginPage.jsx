@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { authService } from '../services/authService'
+import { getErrorMessage } from '../utils/errorHandler'
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('')
@@ -21,7 +22,7 @@ export const LoginPage = () => {
       login(response.data.access_token, response.data.user_id)
       navigate('/dashboard')
     } catch (err) {
-      setError(err.response?.data?.detail || 'Login failed')
+      setError(getErrorMessage(err))
     } finally {
       setLoading(false)
     }
@@ -35,7 +36,7 @@ export const LoginPage = () => {
         </h1>
 
         {error && (
-          <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded whitespace-pre-line">
             {error}
           </div>
         )}

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { patientService } from '../services/patientService'
+import { getErrorMessage } from '../utils/errorHandler'
 
 export const PatientsPage = () => {
   const { logout } = useAuth()
@@ -33,7 +34,7 @@ export const PatientsPage = () => {
         await patientService.deletePatient(patientId)
         loadPatients()
       } catch (err) {
-        setError('Failed to delete patient')
+        setError(getErrorMessage(err))
       }
     }
   }
@@ -84,7 +85,7 @@ export const PatientsPage = () => {
           </div>
 
           {error && (
-            <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded whitespace-pre-line">
               {error}
             </div>
           )}

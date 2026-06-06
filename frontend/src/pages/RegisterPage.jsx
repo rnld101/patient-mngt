@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { authService } from '../services/authService'
+import { getErrorMessage } from '../utils/errorHandler'
 
 export const RegisterPage = () => {
   const [username, setUsername] = useState('')
@@ -26,7 +27,7 @@ export const RegisterPage = () => {
       await authService.register(username, email, password)
       navigate('/login', { state: { message: 'Registration successful! Please log in.' } })
     } catch (err) {
-      setError(err.response?.data?.detail || 'Registration failed')
+      setError(getErrorMessage(err))
     } finally {
       setLoading(false)
     }
@@ -40,7 +41,7 @@ export const RegisterPage = () => {
         </h1>
 
         {error && (
-          <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded whitespace-pre-line">
             {error}
           </div>
         )}

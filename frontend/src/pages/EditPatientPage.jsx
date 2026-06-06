@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link, useParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { patientService } from '../services/patientService'
+import { getErrorMessage } from '../utils/errorHandler'
 
 export const EditPatientPage = () => {
   const { logout } = useAuth()
@@ -80,7 +81,7 @@ export const EditPatientPage = () => {
 
       navigate('/patients')
     } catch (err) {
-      setError(err.response?.data?.detail || 'Failed to update patient')
+      setError(getErrorMessage(err))
     } finally {
       setSaving(false)
     }
@@ -132,7 +133,7 @@ export const EditPatientPage = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Edit Patient</h2>
 
           {error && (
-            <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded whitespace-pre-line">
               {error}
             </div>
           )}
